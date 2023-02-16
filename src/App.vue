@@ -1,5 +1,9 @@
 <script setup>
 
+import { useWeatherStore } from './stores/weather';
+
+const weatherStore = useWeatherStore();
+
 </script>
 
 <template>
@@ -8,20 +12,27 @@
     <div class="wrap">
       <!-- search box -->
       <div class="search-box">
-        <input type="text" placeholder="Search..." class="search-bar">
+        <input type="text" placeholder="Search..." class="search-bar" v-model="weatherStore.location_query" @keydown="weatherStore.fetchWeather">
       </div>
 
       <!-- Weather Information -->
-      <div class="weather-info">
+      <div class="weather-info" v-if="weatherStore.weather.main !== undefined">
 
         <div class="location-box">
-          <div class="location">Dhaka</div>
-          <div class="date">17-12-2022</div>
+          <div class="location">{{ weatherStore.weather.name }}, {{ weatherStore.weather.sys.country }}</div>
+          <div class="date">{{ new Date().toLocaleString() }}</div>
         </div>
 
         <div class="weather-box">
-          <div class="temp">22 °c</div>
-          <div class="weather">dasud</div>
+          <div class="temp">{{ weatherStore.weather.main.temp}} °c</div>
+          <div class="weather">{{weatherStore.weather.weather[0].main}}</div>
+          <div class="icon">
+            <img :src="`http://openweathermap.org/img/wn/${weatherStore.weather.weather[0].icon}@2x.png`" alt="">
+          </div>
+          <div class="other-info">
+            <span class="pressure">Pressure: {{ weatherStore.weather.main.pressure }} mb</span>
+            <span class="pressure">Humidity: {{ weatherStore.weather.main.humidity }}%</span>
+          </div>
         </div>
 
       </div>
@@ -55,7 +66,7 @@
 }
 
 .wrap{
-  height: 600px;
+  height: 700px;
   padding: 25px;
   border-radius: 25px;
   background-image: linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(0,0,0,0.4));
@@ -122,6 +133,18 @@
   font-weight: 700;
   font-style: italic;
   text-shadow: 3px 6px rgba(0,0,0,0.5);
+}
+
+.other-info{
+  display: flex;
+  justify-content: space-between;
+  align-items: ce
+  ;
+}
+
+.pressure{
+  color: orange;
+  font-size: 18px;
 }
 
 
