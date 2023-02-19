@@ -138,8 +138,7 @@ const weatherStore = useWeatherStore();
 .other-info{
   display: flex;
   justify-content: space-between;
-  align-items: ce
-  ;
+  align-items: center;
 }
 
 .pressure{
